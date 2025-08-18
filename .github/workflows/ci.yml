@@ -20,7 +20,7 @@ env:
 
 jobs:
   test-action-ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -51,7 +51,7 @@ jobs:
           tikal.sh -i
 
   test-action-windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout repository
@@ -66,6 +66,12 @@ jobs:
 
       - name: Install npm packages
         run: npm ci
+
+      - name: Setup Java 11
+        # windows-2022 uses Java 8 as the default, and Okapi requires Java 11
+        # okapi 1.47.0 requires Java 11
+        run: |
+          echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV
 
       - name: Test setup-okapi-framework
         id: test-action-latest
