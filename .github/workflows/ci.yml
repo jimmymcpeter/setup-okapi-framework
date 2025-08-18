@@ -44,7 +44,12 @@ jobs:
 
       - name: Print output
         run: |
-          echo "${{ steps.test-action-latest.outputs.path }}"
+          echo "Installed Okapi to ${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Check Java version
+        run: |
+          echo "JAVA_HOME is set to: $JAVA_HOME"
+          java -version
 
       - name: Run Tikal
         run: |
@@ -67,12 +72,6 @@ jobs:
       - name: Install npm packages
         run: npm ci
 
-      - name: Setup Java 11
-        # windows-2022 uses Java 8 as the default, and Okapi requires Java 11
-        # okapi 1.47.0 requires Java 11
-        run: |
-          echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV
-
       - name: Test setup-okapi-framework
         id: test-action-latest
         uses: ./
@@ -81,7 +80,18 @@ jobs:
 
       - name: Print output
         run: |
-          echo "${{ steps.test-action-latest.outputs.path }}"
+          echo "Installed Okapi to ${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Setup Java 11
+        # windows-2022 uses Java 8 as the default, and Okapi requires Java 11
+        # okapi 1.47.0 requires Java 11
+        run: |
+          echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV
+
+      - name: Check Java version
+        run: |
+          echo "JAVA_HOME is set to: $Env:JAVA_HOME"
+          java -version
 
       - name: Run Tikal
         run: |
