@@ -79,4 +79,4 @@ jobs:
 
       - name: Run Tikal
         run: |
-          .\tikal.bat -i
+          tikal.bat -i
