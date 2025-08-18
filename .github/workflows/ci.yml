@@ -1,0 +1,100 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  SETUP_NODE_VERSION: '24.x'
+  SETUP_OKAPI_VERSION: '1.47.0'
+
+jobs:
+  test-action-ubuntu:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.SETUP_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Test setup-okapi-framework
+        id: test-action-latest
+        uses: ./
+        with:
+          version: ${{ env.SETUP_OKAPI_VERSION }}
+
+      - name: Print output
+        run: |
+          echo "Installed Okapi to ${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Check Java version
+        run: |
+          echo "JAVA_HOME is set to: $JAVA_HOME"
+          java -version
+
+      - name: Run Tikal
+        run: |
+          tikal.sh -i
+
+  test-action-windows:
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.SETUP_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Test setup-okapi-framework
+        id: test-action-latest
+        uses: ./
+        with:
+          version: ${{ env.SETUP_OKAPI_VERSION }}
+
+      - name: Print output
+        run: |
+          echo "Installed Okapi to ${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Setup Java 11
+        # windows-2022 uses Java 8 as the default, and Okapi requires Java 11
+        # Using `echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV` will not work
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Check Java version
+        run: |
+          echo "JAVA_HOME is set to: $Env:JAVA_HOME"
+          java -version
+
+      - name: Run Tikal
+        run: |
+          tikal.bat -i
