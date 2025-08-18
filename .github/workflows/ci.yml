@@ -1,0 +1,82 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  SETUP_NODE_VERSION: '24.x'
+  SETUP_OKAPI_VERSION: '1.47.0'
+
+jobs:
+  test-action-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.SETUP_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Test setup-okapi-framework
+        id: test-action-latest
+        uses: ./
+        with:
+          version: ${{ env.SETUP_OKAPI_VERSION }}
+
+      - name: Print output
+        run: |
+          echo "${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Run Tikal
+        run: |
+          tikal.sh -i
+
+  test-action-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.SETUP_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Test setup-okapi-framework
+        id: test-action-latest
+        uses: ./
+        with:
+          version: ${{ env.SETUP_OKAPI_VERSION }}
+
+      - name: Print output
+        run: |
+          echo "${{ steps.test-action-latest.outputs.path }}"
+
+      - name: Run Tikal
+        run: |
+          .\tikal.bat -i

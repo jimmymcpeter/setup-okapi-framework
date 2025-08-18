@@ -1,0 +1,26 @@
+{
+  "name": "setup-okapi-framework",
+  "version": "0.0.0",
+  "description": "Setup Okapi Framework",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "bundle": "npm run format:write && npm run package",
+    "format:write": "npx prettier --write .",
+    "format:check": "npx prettier --check .",
+    "local": "node --env-file=.env src/main.js",
+    "package": "npx ncc build src/main.js -o dist/main --source-map --license licenses.txt"
+  },
+  "author": "James McGonegal",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/tool-cache": "^2.0.2"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3",
+    "prettier": "^3.6.2"
+  }
+}

@@ -1,0 +1,20 @@
+name: setup-okapi-framework
+description: Setup Okapi Framework for use in GitHub Actions
+branding:
+  icon: download
+  color: blue
+
+inputs:
+  version:
+    required: true
+    description: |
+      Version of Okapi to setup. Find it at https://okapiframework.org/binaries/main/
+
+outputs:
+  path:
+    description: |
+      Path where Okapi has been installed.
+
+runs:
+  using: node24
+  main: dist/main/index.js
