@@ -3,7 +3,12 @@
 This GitHub Action will download, install, and cache the
 [Okapi Framework](https://okapiframework.org/).
 
-You will need to manage the Java version setup in the `JAVA_HOME` environment variable on your runner.  The `windows-2022` runner uses Java 8 as its default and Okapi requires Java 11.  An example is provided below showing you how to change it.  You can lookup the Java versions available and the default set at the respective [actions/runner-images](https://github.com/actions/runner-images) readme.
+You will need to manage the Java version setup in the `JAVA_HOME` environment
+variable on your runner. The `windows-2022` runner uses Java 8 as its default
+and Okapi requires Java 11. An example is provided below showing you how to
+change it. You can lookup the Java versions available and the default set at the
+respective [actions/runner-images](https://github.com/actions/runner-images)
+readme.
 
 ## Usage
 
@@ -42,7 +47,6 @@ steps:
 
   - name: Setup Java 11
     # windows-2022 uses Java 8 as the default, and Okapi requires Java 11
-    # okapi 1.47.0 requires Java 11
     # Using `echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV` will not work
     uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
     with:
