@@ -43,7 +43,7 @@ steps:
   - name: Setup Java 11
     # Using `echo "JAVA_HOME=$Env:JAVA_HOME_11_X64" >> $Env:GITHUB_ENV` will not work
     run: |
-      [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "$Env:JAVA_HOME_11_X64", "User")
+      [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "$Env:JAVA_HOME_11_X64", "Machine")
 
   - name: Use Okapi Framework
     run: |
