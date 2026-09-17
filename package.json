@@ -17,10 +17,10 @@
   "author": "James McGonegal",
   "dependencies": {
     "@actions/core": "^3.0.1",
-    "@actions/tool-cache": "^3.0.0"
+    "@actions/tool-cache": "^4.0.0"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.4",
-    "prettier": "^3.8.2"
+    "@vercel/ncc": "^0.44.0",
+    "prettier": "^3.8.4"
   }
 }

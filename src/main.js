@@ -1,5 +1,5 @@
 import core from '@actions/core';
-import tc from '@actions/tool-cache';
+import * as tc from '@actions/tool-cache';
 
 async function main() {
   try {
